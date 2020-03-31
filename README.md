@@ -13,7 +13,7 @@ If you want to know more, write to us at:
 - srkit28@gmail.com
 
 
-Before using this project. Make sure you read our MIT Policies.
+Before using this project. Make sure you read our MIT License Policies.
 Special Thanks to flutter team for introducing such type of sdk.
 
 For flutter docs:
