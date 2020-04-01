@@ -22,7 +22,7 @@ class _ForecastPageState extends State<ForecastPage> {
   var isLoading = false;
 
   Future<List<ForecastData>> _fetchforecast(double lat, double lng) async {
-    var key = 'c4497e0d102ffa57f370d5894fe96e87';
+    var key = /* 'weather api key';  For Api key visit openweather.org */
     var data = await http.get(
         'https://api.openweathermap.org/data/2.5/forecast?APPID=${key.toString()}lat=${lat.toString()}&lon=${lng.toString()}&units=metric');
     var jsonData = json.decode(data.body);
