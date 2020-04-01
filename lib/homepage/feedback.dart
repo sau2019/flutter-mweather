@@ -6,7 +6,9 @@ License: MIT
 */
 
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:mweather/homepage/homepage.dart';
+import 'package:http/http.dart' as http;
 
 var inputDecoration = InputDecoration(
   fillColor: Colors.white,
@@ -20,6 +22,7 @@ var inputDecoration = InputDecoration(
     borderRadius: BorderRadius.circular(20.0),
   ),
 );
+
 var messageDecoration = InputDecoration(
   isDense: true,
   hintMaxLines: 50,
@@ -42,14 +45,17 @@ class FeedbackPage extends StatefulWidget {
 }
 
 class _FeedbackPageState extends State<FeedbackPage> {
+ final _scaffoldresKey = GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
   String name;
   String email;
   String message;
+  bool flag = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        key: _scaffoldresKey,
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
@@ -100,10 +106,10 @@ class _FeedbackPageState extends State<FeedbackPage> {
                 ),
                 TextFormField(
                   decoration: inputDecoration.copyWith(hintText: 'Name'),
-                  validator: (val) => val.isEmpty ? 'Enter your name.' : null,
-                  onChanged: (val) {
+                  validator: (value) => value.isEmpty ? 'Enter your name.' : null,
+                  onChanged: (value) {
                     setState(
-                      () => name = val,
+                      () => name = value,
                     );
                   },
                 ),
@@ -112,11 +118,11 @@ class _FeedbackPageState extends State<FeedbackPage> {
                 ),
                 TextFormField(
                   decoration: inputDecoration.copyWith(hintText: 'Email ID'),
-                  validator: (val) =>
-                      val.isEmpty ? 'Enter your email id.' : null,
-                  onChanged: (val) {
+                  validator: (value) =>
+                      value.isEmpty ? 'Enter your email id.' : null,
+                  onChanged: (value) {
                     setState(
-                      () => email = val,
+                      () => email = value,
                     );
                   },
                 ),
@@ -127,10 +133,10 @@ class _FeedbackPageState extends State<FeedbackPage> {
                   maxLines: 5,
                   keyboardType: TextInputType.multiline,
                   decoration: messageDecoration.copyWith(hintText: 'Message'),
-                  validator: (val) => val==null ? 'Type your message.' : null,
-                  onChanged: (val) {
+                  validator: (value) => value.isEmpty ? 'Type your message.' : null,
+                  onChanged: (value) {
                     setState(
-                      () => message = val,
+                      () => message = value,
                     );
                   },
                 ),
@@ -138,11 +144,16 @@ class _FeedbackPageState extends State<FeedbackPage> {
                   height: 50.0,
                 ),
                 RaisedButton(
-                  onPressed: () async { 
-                    _formKey.currentState.validate();
-                    print(email);
-                    print(name);
-                    print(message);
+                  onPressed: () {
+                  
+                    insertFeedback(name, email, message);
+
+                    setState(() {
+                      flag = true;
+                    });
+                  
+
+                    
                   },
                   hoverColor: Colors.blue,
                   shape: RoundedRectangleBorder(
@@ -158,12 +169,76 @@ class _FeedbackPageState extends State<FeedbackPage> {
                   color: Colors.yellowAccent,
                   elevation: 2.0,
                   focusColor: Colors.yellow,
-                )
+                ),
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: !flag
+                        ? Text('')
+                        : SpinKitCircle(color: Colors.blue, size: 40),
+                  ),
+                ),
               ],
             ),
           ),
         ),
       ),
     );
+  }
+
+  static const ROOT = 'http://192.168.225.44/mweather/index.php';
+  static const _ADD_FEEDBACK = 'ADD_FEEDBACK';
+
+  Future<String> insertFeedback(
+      String names, String emails, String messages) async {
+    try {
+      var map = Map<String, dynamic>();
+      map['action'] = _ADD_FEEDBACK;
+      map['names'] = names;
+      map['emails'] = emails;
+      map['messages'] = messages;
+      print(names);
+      print(emails);
+      print(messages);
+      final response = await http.post(ROOT, body: map);
+      print('Feedback Response: ${response.body}');
+      if (200 == response.statusCode) {
+       
+        setState(() {
+          Future.delayed(Duration(seconds: 1)).then((_) => _displayresSnackbar);
+          flag = false;
+          name='';
+          email='';
+          message='';
+        });
+        print("200 success result");
+
+        return response.body;
+      } else {
+        return "error";
+      }
+    } catch (e) {
+      return "error";
+    }
+  }
+  void get _displayresSnackbar {
+    _scaffoldresKey.currentState.showSnackBar(SnackBar(
+      backgroundColor: Color(0xffFFEB3B),
+      elevation: 0.5,
+      duration: Duration(seconds: 1),
+      content: Padding(
+        padding: const EdgeInsets.all(2.0),
+        child: Text(
+          'Thanks for giving Feedback.',
+          style: TextStyle(
+            color: Colors.blueAccent,
+            fontSize: 18.0,
+            fontFamily: 'IndieFlower',
+            fontWeight: FontWeight.bold,
+          ),
+          textAlign: TextAlign.center,
+        ),
+      ),
+    ));
   }
 }

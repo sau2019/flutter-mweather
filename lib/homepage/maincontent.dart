@@ -456,9 +456,7 @@ class _MainContentState extends State<MainContent> {
       context: context,
       content: Column(
         children: <Widget>[
-          Image.asset(
-            'assets/banner.jpg',
-          ),
+          Image.asset('assets/banner.jpg'),
         ],
       ),
       title: 'mWeather Alert',
