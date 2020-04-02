@@ -10,32 +10,72 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:mweather/homepage/homepage.dart';
 import 'package:http/http.dart' as http;
 
-var inputDecoration = InputDecoration(
+var nameDecoration = InputDecoration(
+  labelText: 'Name',
+  
   fillColor: Colors.white,
   filled: true,
-  enabledBorder: OutlineInputBorder(
-    borderSide: BorderSide(color: Colors.grey, width: 2.0),
-    borderRadius: BorderRadius.circular(10.0),
-  ),
+  hintText: 'Enter your name.',
   focusedBorder: OutlineInputBorder(
-    borderSide: BorderSide(color: Colors.blue, width: 2.0),
+    borderRadius: BorderRadius.circular(10.0),
+    borderSide: BorderSide(
+      color: Colors.blueAccent,
+      width: 2.0,
+    ),
+  ),
+  border: OutlineInputBorder(
     borderRadius: BorderRadius.circular(20.0),
+    borderSide: BorderSide(
+      width: 2.0,
+      color: Colors.grey,
+    ),
   ),
 );
 
-var messageDecoration = InputDecoration(
+
+
+var emailDecoration = InputDecoration(
+  labelText: 'Email',
+  fillColor: Colors.white,
+  filled: true,
+  hintText: 'Enter your email id.',
+  focusedBorder: OutlineInputBorder(
+    borderRadius: BorderRadius.circular(10.0),
+    borderSide: BorderSide(
+      color: Colors.blueAccent,
+      width: 2.0,
+    ),
+  ),
+  border: OutlineInputBorder(
+    borderRadius: BorderRadius.circular(20.0),
+    borderSide: BorderSide(
+      width: 2.0,
+      color: Colors.grey,
+    ),
+  ),
+);
+
+var mDecoration = InputDecoration(
   isDense: true,
   hintMaxLines: 50,
   contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10),
   fillColor: Colors.white,
   filled: true,
-  enabledBorder: OutlineInputBorder(
-    borderRadius: BorderRadius.circular(10.0),
-    borderSide: BorderSide(color: Colors.grey, width: 2.0),
-  ),
+  labelText: 'Message',
+  hintText: 'Type your message.',
   focusedBorder: OutlineInputBorder(
-    borderSide: BorderSide(color: Colors.blue, width: 2.0),
+    borderRadius: BorderRadius.circular(10.0),
+    borderSide: BorderSide(
+      color: Colors.blueAccent,
+      width: 2.0,
+    ),
+  ),
+  border: OutlineInputBorder(
     borderRadius: BorderRadius.circular(20.0),
+    borderSide: BorderSide(
+      width: 2.0,
+      color: Colors.grey,
+    ),
   ),
 );
 
@@ -45,17 +85,35 @@ class FeedbackPage extends StatefulWidget {
 }
 
 class _FeedbackPageState extends State<FeedbackPage> {
- final _scaffoldresKey = GlobalKey<ScaffoldState>();
+  final _scaffoldresKey = GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
-  String name;
-  String email;
-  String message;
+  final name = TextEditingController();
+  final email = TextEditingController();
+  final message = TextEditingController();
   bool flag = false;
+  bool errorflag = false;
+  FocusNode nameFocusNode = new FocusNode();
+  FocusNode emailFocusNode = new FocusNode();
+  FocusNode messageFocusNode = new FocusNode();
+
+
+
+
+
+  @override
+  void initState() {
+    super.initState();
+     nameFocusNode = FocusNode();
+     emailFocusNode=FocusNode();
+     messageFocusNode=FocusNode();
+  }
+
+  
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        key: _scaffoldresKey,
+      key: _scaffoldresKey,
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
@@ -83,8 +141,8 @@ class _FeedbackPageState extends State<FeedbackPage> {
           color: Color(0xffFFF7AA),
           padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
           child: Form(
+            key: _formKey,
             child: Column(
-              key: _formKey,
               children: <Widget>[
                 SizedBox(
                   height: 20.0,
@@ -105,39 +163,46 @@ class _FeedbackPageState extends State<FeedbackPage> {
                   height: 20.0,
                 ),
                 TextFormField(
-                  decoration: inputDecoration.copyWith(hintText: 'Name'),
-                  validator: (value) => value.isEmpty ? 'Enter your name.' : null,
-                  onChanged: (value) {
-                    setState(
-                      () => name = value,
-                    );
+                  decoration: nameDecoration,
+                  focusNode: nameFocusNode,
+                  keyboardType:TextInputType.text,
+                  controller: name,
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'Name is required*';
+                    }
+                    return null;
                   },
                 ),
                 SizedBox(
                   height: 20.0,
                 ),
                 TextFormField(
-                  decoration: inputDecoration.copyWith(hintText: 'Email ID'),
-                  validator: (value) =>
-                      value.isEmpty ? 'Enter your email id.' : null,
-                  onChanged: (value) {
-                    setState(
-                      () => email = value,
-                    );
+                  decoration: emailDecoration,
+                  focusNode: emailFocusNode,
+                  keyboardType: TextInputType.emailAddress,
+                  controller: email,
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'Email ID is required*';
+                    }
+                    return null;
                   },
                 ),
                 SizedBox(
                   height: 20.0,
                 ),
                 TextFormField(
+                  focusNode: messageFocusNode,
+                  decoration: mDecoration,
                   maxLines: 5,
+                  controller: message,
                   keyboardType: TextInputType.multiline,
-                  decoration: messageDecoration.copyWith(hintText: 'Message'),
-                  validator: (value) => value.isEmpty ? 'Type your message.' : null,
-                  onChanged: (value) {
-                    setState(
-                      () => message = value,
-                    );
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'Message required*';
+                    }
+                    return null;
                   },
                 ),
                 SizedBox(
@@ -145,15 +210,14 @@ class _FeedbackPageState extends State<FeedbackPage> {
                 ),
                 RaisedButton(
                   onPressed: () {
-                  
-                    insertFeedback(name, email, message);
+                    // Validate returns true if the form is valid, otherwise false.
+                    if (_formKey.currentState.validate()) {
+                      insertFeedback(name.text, email.text, message.text);
 
-                    setState(() {
-                      flag = true;
-                    });
-                  
-
-                    
+                      setState(() {
+                        flag = true;
+                      });
+                    }
                   },
                   hoverColor: Colors.blue,
                   shape: RoundedRectangleBorder(
@@ -186,7 +250,8 @@ class _FeedbackPageState extends State<FeedbackPage> {
     );
   }
 
-  static const ROOT = 'http://192.168.225.44/mweather/index.php';
+  static const ROOT =
+      'https://mweather.000webhostapp.com/insertdata.php'; // global url
   static const _ADD_FEEDBACK = 'ADD_FEEDBACK';
 
   Future<String> insertFeedback(
@@ -203,13 +268,12 @@ class _FeedbackPageState extends State<FeedbackPage> {
       final response = await http.post(ROOT, body: map);
       print('Feedback Response: ${response.body}');
       if (200 == response.statusCode) {
-       
         setState(() {
           Future.delayed(Duration(seconds: 1)).then((_) => _displayresSnackbar);
           flag = false;
-          name='';
-          email='';
-          message='';
+          name.clear();
+          email.clear();
+          message.clear();
         });
         print("200 success result");
 
@@ -221,6 +285,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
       return "error";
     }
   }
+
   void get _displayresSnackbar {
     _scaffoldresKey.currentState.showSnackBar(SnackBar(
       backgroundColor: Color(0xffFFEB3B),
@@ -240,5 +305,17 @@ class _FeedbackPageState extends State<FeedbackPage> {
         ),
       ),
     ));
+  }
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    name.dispose();
+    email.dispose();
+    message.dispose();
+    nameFocusNode.dispose();
+    emailFocusNode.dispose();
+    messageFocusNode.dispose();
+    super.dispose();
   }
 }

@@ -95,7 +95,7 @@ class _HomePageState extends State<HomePage> {
       ),
       body: userLocation == null
           ? Container(
-              child: Column(
+              child:Column(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
