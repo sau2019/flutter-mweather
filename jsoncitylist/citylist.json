@@ -1,4 +1,197 @@
 [
+  {
+    "city": "Indore",
+    "lat":22.719568,
+    "lng":75.857727,
+    "iso2": "IN"
+},
+{
+    "city": "Bhopal",
+    "lat":22.719568,
+    "lng":75.857727,
+    "iso2": "IN"
+},
+{
+    "city": "Jabalpur",
+    "lat":23.165710,
+    "lng":79.932360,
+    "iso2": "IN"
+},
+{
+    "city": "Gwalior",
+    "lat":26.214560,
+    "lng":78.182710,
+    "iso2": "IN"
+},
+{
+    "city": "Ujjain",
+    "lat":23.179190,
+    "lng":75.784250,
+    "iso2": "IN"
+},
+{
+    "city": "Sagar",
+    "lat":23.847700,
+    "lng":78.743300,
+    "iso2": "IN"
+},
+{
+    "city": "Dewas",
+    "lat":22.972010,
+    "lng":76.048190,
+    "iso2": "IN"
+},
+{
+    "city": "Satna",
+    "lat":24.560160,
+    "lng":80.830330,
+    "iso2": "IN"
+},
+{
+    "city": "Ratlam",
+    "lat":23.331450,
+    "lng":75.036900,
+    "iso2": "IN"
+},
+{
+    "city": "Rewa",
+    "lat":24.543961,
+    "lng":81.301537,
+    "iso2": "IN"
+},
+{
+    "city": "Katni",
+    "lat":23.830845,
+    "lng":80.407227,
+    "iso2": "IN"
+},
+{
+    "city": "Singrauli",
+    "lat":24.199209,
+    "lng":82.664551,
+    "iso2": "IN"
+},
+{
+    "city": "Burhanpur",
+    "lat":21.311729,
+    "lng":76.226173,
+    "iso2": "IN"
+},
+{
+    "city": "Khandwa",
+    "lat":21.825733,
+    "lng":76.352570,
+    "iso2": "IN"
+},
+{
+    "city": "Bhind",
+    "lat":26.585739,
+    "lng":78.770470,
+    "iso2": "IN"
+},
+{
+    "city": "Chhindwara",
+    "lat":22.057438,
+    "lng":78.938171,
+    "iso2": "IN"
+},
+{
+    "city": "Guna",
+    "lat":24.641130,
+    "lng":77.314020,
+    "iso2": "IN"
+},
+{
+    "city": "Shivpuri",
+    "lat":25.435787,
+    "lng":77.665070,
+    "iso2": "IN"
+},
+{
+    "city": "Vidisha",
+    "lat":23.525110,
+    "lng":77.808136,
+    "iso2": "IN"
+},
+{
+    "city": "Chhatarpur",
+    "lat":24.916355,
+    "lng":75.581184,
+    "iso2": "IN"
+},
+{
+    "city": "Damoh",
+    "lat":23.838099,
+    "lng":79.442169,
+    "iso2": "IN"
+},
+{
+    "city": "Mandsaur",
+    "lat":24.076836,
+    "lng":75.069298,
+    "iso2": "IN"
+},
+{
+    "city": "Khargone",
+    "lat":21.833525,
+    "lng":75.614990,
+    "iso2": "IN"
+},
+{
+    "city": "Neemuch",
+    "lat":24.476385,
+    "lng":74.862411,
+    "iso2": "IN"
+},
+{
+    "city": "Pithampur",
+    "lat":22.611500,
+    "lng":75.677696,
+    "iso2": "IN"
+},
+{
+    "city": "Hoshangabad",
+    "lat":22.744108,
+    "lng":77.736969,
+    "iso2": "IN"
+},
+{
+    "city": "Itarsi",
+    "lat":22.605486,
+    "lng":77.753548,
+    "iso2": "IN"
+},
+{
+    "city": "Sehore",
+    "lat":23.205011,
+    "lng":77.085075,
+    "iso2": "IN"
+},
+{
+    "city": "Betul",
+    "lat":21.901159,
+    "lng":77.896019,
+    "iso2": "IN"
+},
+{
+    "city": "Seoni",
+    "lat":22.086868,
+    "lng":79.543488,
+    "iso2": "IN"
+},
+{
+    "city": "Datia",
+    "lat":25.657700,
+    "lng":78.457802,
+    "iso2": "IN"
+},
+{
+    "city": "Nagda",
+    "lat":23.445459,
+    "lng":75.416992,
+    "iso2": "IN"
+},
+
  {
    "city": "Tokyo",
    "city_ascii": "Tokyo",
@@ -2755,19 +2948,7 @@
    "population": 2035000,
    "id": 1156332710
  },
- {
-   "city": "Indore",
-   "city_ascii": "Indore",
-   "lat": 22.7151,
-   "lng": 75.865,
-   "country": "India",
-   "iso2": "IN",
-   "iso3": "IND",
-   "admin_name": "Madhya Pradesh",
-   "capital": "",
-   "population": 2026000,
-   "id": 1356402812
- },
+ 
  {
    "city": "Goiânia",
    "city_ascii": "Goiania",
@@ -3223,19 +3404,7 @@
    "population": 1730363,
    "id": 1840000596
  },
- {
-   "city": "Bhopal",
-   "city_ascii": "Bhopal",
-   "lat": 23.25,
-   "lng": 77.41,
-   "country": "India",
-   "iso2": "IN",
-   "iso3": "IND",
-   "admin_name": "Madhya Pradesh",
-   "capital": "admin",
-   "population": 1727000,
-   "id": 1356734039
- },
+ 
  {
    "city": "Hohhot",
    "city_ascii": "Hohhot",
@@ -4848,19 +5017,7 @@
    "population": 1292900,
    "id": 1826289852
  },
- {
-   "city": "Jabalpur",
-   "city_ascii": "Jabalpur",
-   "lat": 23.1751,
-   "lng": 79.9551,
-   "country": "India",
-   "iso2": "IN",
-   "iso3": "IND",
-   "admin_name": "Madhya Pradesh",
-   "capital": "",
-   "population": 1285000,
-   "id": 1356115460
- },
+
  {
    "city": "San José",
    "city_ascii": "San Jose",
@@ -8163,19 +8320,7 @@
    "population": 979000,
    "id": 1356739179
  },
- {
-   "city": "Gwalior",
-   "city_ascii": "Gwalior",
-   "lat": 26.23,
-   "lng": 78.1801,
-   "country": "India",
-   "iso2": "IN",
-   "iso3": "IND",
-   "admin_name": "Madhya Pradesh",
-   "capital": "",
-   "population": 978000,
-   "id": 1356363967
- },
+ 
  {
    "city": "Hamamatsu",
    "city_ascii": "Hamamatsu",
@@ -13311,19 +13456,7 @@
    "population": 513698,
    "id": 1360353144
  },
- {
-   "city": "Ujjain",
-   "city_ascii": "Ujjain",
-   "lat": 23.1904,
-   "lng": 75.79,
-   "country": "India",
-   "iso2": "IN",
-   "iso3": "IND",
-   "admin_name": "Madhya Pradesh",
-   "capital": "",
-   "population": 513350,
-   "id": 1356050735
- },
+ 
  {
    "city": "Salta",
    "city_ascii": "Salta",
@@ -19889,19 +20022,7 @@
    "population": 307684,
    "id": 1804565996
  },
- {
-   "city": "Ratlām",
-   "city_ascii": "Ratlam",
-   "lat": 23.3504,
-   "lng": 75.03,
-   "country": "India",
-   "iso2": "IN",
-   "iso3": "IND",
-   "admin_name": "Madhya Pradesh",
-   "capital": "",
-   "population": 307229,
-   "id": 1356241663
- },
+ 
  {
    "city": "St. Paul",
    "city_ascii": "St. Paul",
@@ -27689,19 +27810,7 @@
    "population": 197340,
    "id": 1356836043
  },
- {
-   "city": "Burhānpur",
-   "city_ascii": "Burhanpur",
-   "lat": 21.3004,
-   "lng": 76.13,
-   "country": "India",
-   "iso2": "IN",
-   "iso3": "IND",
-   "admin_name": "Madhya Pradesh",
-   "capital": "",
-   "population": 197233,
-   "id": 1356857493
- },
+ 
  {
    "city": "Kure",
    "city_ascii": "Kure",

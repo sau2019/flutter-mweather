@@ -58,6 +58,7 @@ flutter:
    - assets/mainicon.png
    - assets/banner.jpg
    - assets/back1.jpg
+   - assets/back4.jpg
    - assets/wind.png
    - assets/city2.jpg
    - assets/sistec.png
@@ -70,6 +71,7 @@ flutter:
    - assets/temp.png
    - assets/devloper.png
    - assets/locationpermit.png
+   - assets/forecastbanner.jpg
    - jsoncitylist/citylist.json
 
    

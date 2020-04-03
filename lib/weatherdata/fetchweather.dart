@@ -9,7 +9,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 Future<Album> fetchAlbum(var lat, var long) async {
-  var key = /* "api key";   For api key visit openweather.org */
+  var key = "c4497e0d102ffa57f370d5894fe96e87";
   
 
    final response = await http.get(

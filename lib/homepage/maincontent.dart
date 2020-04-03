@@ -437,7 +437,7 @@ class _MainContentState extends State<MainContent> {
                 color: Colors.white60,
                 height: MediaQuery.of(context).size.height,
                 width: MediaQuery.of(context).size.width,
-                child: ForecastPage(),
+                child: ForecastPage( latitude: widget.latitude,longitude: widget.longitude),
               ),
             ],
           );
