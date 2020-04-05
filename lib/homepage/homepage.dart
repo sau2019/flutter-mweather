@@ -5,6 +5,7 @@ License: MIT
 
 */
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:mweather/about.dart';
 import 'package:mweather/homepage/feedback.dart';
@@ -13,6 +14,7 @@ import 'package:mweather/weatherdata/weathercity.dart';
 import 'package:geolocator/geolocator.dart';
 import 'dart:async';
 import 'package:open_settings/open_settings.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -95,7 +97,7 @@ class _HomePageState extends State<HomePage> {
       ),
       body: userLocation == null
           ? Container(
-              child:Column(
+              child: Column(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
@@ -214,7 +216,29 @@ class _HomePageState extends State<HomePage> {
           child: Padding(
             padding: const EdgeInsets.all(5.0),
             child: ListTile(
-              onTap: null,
+              onTap: () {
+                Alert(
+                  context: context,
+                  content:
+                      Icon(Icons.file_download, size: 40, color: Colors.grey),
+                  title: "Github Link",
+                  desc: " https://github.com/sau2019/mweather",
+                  buttons: [
+                    DialogButton(
+                      child: Text(
+                        "Copy",
+                        style: TextStyle(color: Colors.white, fontSize: 18),
+                      ),
+                      onPressed: () {
+                        Clipboard.setData(new ClipboardData(
+                            text: 'https://github.com/sau2019/mweather'));
+                        Navigator.pop(context);
+                      },
+                      width: 120,
+                    )
+                  ],
+                ).show();
+              },
               leading: Icon(
                 Icons.file_download,
                 color: Colors.blueAccent,

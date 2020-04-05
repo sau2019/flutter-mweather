@@ -48,23 +48,7 @@ class _ForecastPageState extends State<ForecastPage> {
           ? Container(
               child: spinkit,
             )
-          : Container(
-              child: Column(
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Card(
-                        elevation: 3.0,
-                        child: Image.asset(
-                          'assets/forecastbanner.jpg',
-                          fit: BoxFit.fitWidth,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Expanded(
-                    child: forecastData != null
+          :forecastData != null
                         ? ListView.builder(
                             itemCount: forecastData.list.length,
                             scrollDirection: Axis.vertical,
@@ -72,10 +56,6 @@ class _ForecastPageState extends State<ForecastPage> {
                                 weather: forecastData.list.elementAt(index)),
                           )
                         : Text('data fetching'),
-                  ),
-                ],
-              ),
-            ),
     );
   }
 

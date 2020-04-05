@@ -9,21 +9,15 @@ import 'package:flutter/material.dart';
 import 'package:mweather/checkconnection.dart';
 import 'dart:async';
 
-import 'package:mweather/spinkit.dart';
-
 class FrontPage extends StatefulWidget {
   @override
   _FrontPageState createState() => _FrontPageState();
 }
 
 class _FrontPageState extends State<FrontPage> {
-  var isloading = false;
-
   @override
   void initState() {
     super.initState();
-
-    isloading = true;
 
     Timer(
         Duration(seconds: 2),
@@ -37,53 +31,41 @@ class _FrontPageState extends State<FrontPage> {
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/back1.jpg'),
+            image: AssetImage('assets/frontbanner.jpg'),
             fit: BoxFit.cover,
           ),
         ),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Center(
-              child: Container(
-                padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 10.0),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(50),
-                  child: SizedBox(
-                    width: 300,
-                    height: 300,
-                    child: Image.asset(
-                      'assets/wicon.gif',
-                      fit: BoxFit.fill,
-                      height: 300,
-                      width: 300.0,
+            Row(
+              children: <Widget>[
+                Container(
+                  height: MediaQuery.of(context).size.height - 45,
+                  width: MediaQuery.of(context).size.width,
+                  child: Center(
+                    child: CircleAvatar(
+                      backgroundColor: Colors.black,
+                      radius: 70,
+                      child: Container(
+                        height: 150,
+                        width: 150,
+                        child: Image.asset('assets/appicon.png'),
+                      ),
                     ),
                   ),
                 ),
-              ),
+              ],
             ),
             Expanded(
-              child: Center(
-                child: Text(
-                  'mWeather',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.yellowAccent,
-                    wordSpacing: 1.5,
-                    fontSize: 32.0,
-                    fontFamily: 'Acme',
-                    height: 5.0,
-                  ),
-                  textDirection: TextDirection.ltr,
-                ),
+              child: Text(
+                'mWeather',
+                style: TextStyle(
+                    color: Color(0xffF4B753),
+                    fontSize: 22,
+                    letterSpacing: 1.0,
+                    fontFamily: 'Acme'),
               ),
-            ),
-            Expanded(
-              child: Container(
-                padding: EdgeInsets.all(5.0),
-                child: spinkitload,
-              ),
-            ),
+            )
           ],
         ),
       ),

@@ -14,7 +14,7 @@ class ForecastItem extends StatelessWidget {
   
       elevation: 5.0,
       child: Padding(
-        padding: const EdgeInsets.all(1.0),
+        padding: const EdgeInsets.all(5.0),
         child: Container(
           decoration: BoxDecoration(
             image: DecorationImage(

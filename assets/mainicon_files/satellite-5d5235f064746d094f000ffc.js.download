@@ -1,0 +1,417 @@
+/******************************************************************************
+* Adobe DTM Data Layer Version 1.0
+* Created by Chris Luka, Enterprise Architect, Adobe Consulting Services
+*
+* This code provides a standardized data layer for all DTM services, along
+* with several helper routines for handling asynchronous web applications &
+* in-page activity tracking.
+*****************************************************************************/
+
+/******************************************************************************
+* Configuration -- Adjust these settings to match your implementation
+*****************************************************************************/
+
+// Configure Analytics
+//var s_account = 'adbemmarvelweb.rebootdev2';
+
+var s_url=document.location.hostname.toString();
+
+if(s_url.match(/projectm\.adobe\.com/)) {
+	var s_account="adbemmarvelweb.pilot";}
+else if (
+  s_url.match(/slate\.adobe\.com/) ||
+  s_url.match(/spark\.adobe\.com/) ||
+  s_url.match(/blog\.adobespark\.com/) || 
+	s_url.match(/spark\-cs\.adobe\.io/) ){ 
+  var s_account="adbemmarvelweb.prod";
+}
+else { var s_account="adbemmarvelweb.rebootdev2";}
+
+var s = s_gi(s_account);
+
+s.trackOffline=true;
+
+s.trackingServer='stats.adobe.com';
+s.trackingServerSecure='sstats.adobe.com';
+
+// This aliases the adb object inside the _satellite object
+var _dtm_data_object = adb;
+
+// Adobe Dynamic Tag Management creates a variable named _satellite to
+// hold all DTM functions & data.  We're going to create a sub-object within
+// _satellite.  Provide a name for that object here.
+var _dtm_data_layer_key = 'adb';
+    
+// If your page has asynchronous (AJAX) elements that are required to complete
+// for DTM to to operate correctly, set this variable to true
+var _dtm_async_activity = false;
+    
+// For pages with asynchronous behavior, we need to ensure that all the
+// async elements have a chance to "report in" before we start checking to
+// see if they've all completed.  Set the value below to the number of
+// milliseconds you want the "registration period" to last.  NOTE that
+// asynchronous events can still register after this period has passed, but
+// the system begins checking for completion once this delay is over, so a
+// "late registrant" might not be counted and you could lose potential data.
+var _dtm_async_delay = 500;
+
+/******************************************************************************
+* Adobe DTM Data Layer Version 1.0
+ * Created by Chris Luka, Enterprise Architect, Adobe Consulting Services
+ *
+ * This code provides a standardized data layer for all DTM services, along
+ * with several helper routines for handling asynchronous web applications &
+ * in-page activity tracking.
+ *****************************************************************************/
+
+/******************************************************************************
+ * Adobe DTM Data Layer -- Application-Specific Code
+ * Adapt these function to add additional functionality to your DTM instance
+ *****************************************************************************/
+
+// Adapt this first function to ensure that all required objects are in place and
+// ready for use.
+var _dtm_check_status_attempts = 0;
+function _dtm_check_status(){
+     
+  	// Assume everything's ready to go, then...
+    var status = true;
+
+    // ...validate that assumption
+    status = status && typeof adb.pageloadready != 'undefined' && adb.pageloadready;
+  
+    // Finally, return the result
+    return status;
+}
+  
+
+// This function should contain all code specific to your web application
+function _dtm_application(){
+      console.log("Data Layer : Fire Initial Page View");
+      _satellite.adb.plugins.track();
+}
+
+/******************************************************************************
+ * Adobe DTM Data Layer Version 1.0
+ * Created by Chris Luka, Enterprise Architect, Adobe Consulting Services
+ *
+ * This code provides a standardized data layer for all DTM services, along
+ * with several helper routines for handling asynchronous web applications &
+ * in-page activity tracking.
+ *****************************************************************************/
+
+/******************************************************************************
+ * Plugins -- Add any plugins here.  Leverage the example syntax to connect the
+ * plugins to your company's _satellite object.
+ ******************************************************************************/
+
+// Register plugins via the following syntax:
+//_satellite.adb.plugins.RegisterPlugin([plugin name],[plugin fn]);
+function _dtm_register_plugins() {
+    var w = window;
+
+    _satellite.adb.plugins.RegisterPlugin('setCampaign', function() {
+
+        // s.campaign = s.Util.getQueryParam("trackingid") || s.Util.getQueryParam("trackingId")|| s.Util.getQueryParam("r");
+
+        var campaign = s.Util.getQueryParam("trackingid") || s.Util.getQueryParam("trackingId") || s.Util.getQueryParam("r") || s.Util.getQueryParam("samcap_id") ;
+        s.campaign = SL._getValOnce(campaign, 'spark_campaign', 0);
+
+    });
+
+    _satellite.adb.plugins.RegisterPlugin('resetCampaign', function() {
+
+        s.campaign = '';
+
+    });
+
+    _satellite.adb.plugins.RegisterPlugin('track', function() {
+
+        _satellite.adb.plugins.adbToContextData(adb, 'adb');
+
+        s.t();
+        s.contextData = {};
+
+        // Global Production capture of various additional data
+        if (
+            w.s_adobe &&
+            w.adb &&
+            w.adb.event &&
+            w.adb.event.eventInfo &&
+            w.adb.event.eventInfo.eventName
+        ) {
+            var
+                s_adobe_linkName,
+                linkTrackEventsBackup,
+                eventsBackup;
+
+            var pName = s_adobe.pageName.split(":");
+            if (pName[pName.length - 1].match(/\d+/ig)) {
+                s_adobe.pageName = s_adobe.pageName.substring(0, s_adobe.pageName.lastIndexOf(':'))
+
+            }
+            if (w.adb.event.eventInfo.eventName === 'landing:viewedLandingPage') {
+                s_adobe_linkName = s_adobe.prop3 + '_action:landing:viewedLandingPage';
+            } else if (w.adb.event.eventInfo.eventName === 'landing:viewedPage') {
+                s_adobe_linkName = s_adobe.prop3 + '_action:landing:viewedPage';
+            } else if (w.adb.event.eventInfo.eventName === 'auth:firstSignIn') {
+                linkTrackEventsBackup = s_adobe.linkTrackEvents;
+                s_adobe.linkTrackEvents = (s_adobe.linkTrackEvents ? s_adobe.linkTrackEvents + ',' : '') + 'event12,event84';
+                eventsBackup = s_adobe.events;
+                s_adobe.events = (s_adobe.events ? s_adobe.events + ',' : '') + 'event12,event84';
+                s_adobe_linkName = s_adobe.prop3 + '_action:auth:firstSignIn';
+            } else if (w.adb.event.eventInfo.eventName === 'projectCreated') {
+                s_adobe_linkName = s_adobe.prop3 + '_action:projectCreated';
+            } else if (
+                w.adb.event.eventInfo.eventName === 'Sharing Action' &&
+                w.adb.projectm &&
+                w.adb.projectm.eventData &&
+                w.adb.projectm.eventData.eventAction
+            ) {
+                s_adobe_linkName = s_adobe.prop3 + '_action:share';
+                if (w.adb.projectm.eventData.eventAction === 'Content Publishes') {
+                    s_adobe_linkName += ':contentPublish';
+                } else if (w.adb.projectm.eventData.eventAction === 'Social Shares') {
+                    s_adobe_linkName += ':social';
+                }
+            }
+
+            if (s_adobe_linkName) {
+                s_adobe.tl(true, 'o', s_adobe_linkName);
+            }
+
+            s_adobe.linkTrackEvents = linkTrackEventsBackup;
+            s_adobe.events = eventsBackup;
+        }
+
+    });
+
+
+
+    _satellite.adb.plugins.RegisterPlugin('trackLink', function(object, linkName, linkType, variableOverrides, doneAction) {
+
+        _satellite.adb.plugins.adbToContextData(adb, 'adb');
+
+        s.tl(object, linkType, linkName, variableOverrides, doneAction);
+        s.campaign = '';
+        // Global Production capture of various additional data
+        if (
+            w.s_adobe &&
+            w.adb &&
+            w.adb.event &&
+            w.adb.event.eventInfo &&
+            w.adb.event.eventInfo.eventName
+        ) {
+            var
+                s_adobe_linkName,
+                linkTrackEventsBackup,
+                eventsBackup;
+            var pName = s_adobe.pageName.split(":");
+            if (pName[pName.length - 1].match(/\d+/ig)) {
+                s_adobe.pageName = s_adobe.pageName.substring(0, s_adobe.pageName.lastIndexOf(':'))
+
+            }
+            if (w.adb.event.eventInfo.eventName === 'landing:viewedLandingPage') {
+                s_adobe_linkName = s_adobe.prop3 + '_action:landing:viewedLandingPage';
+            } else if (w.adb.event.eventInfo.eventName === 'landing:viewedPage') {
+                s_adobe_linkName = s_adobe.prop3 + '_action:landing:viewedPage';
+            } else if (w.adb.event.eventInfo.eventName === 'auth:firstSignIn') {
+                linkTrackEventsBackup = s_adobe.linkTrackEvents;
+                s_adobe.linkTrackEvents = (s_adobe.linkTrackEvents ? s_adobe.linkTrackEvents + ',' : '') + 'event12,event84';
+                eventsBackup = s_adobe.events;
+                s_adobe.events = (s_adobe.events ? s_adobe.events + ',' : '') + 'event12,event84';
+                s_adobe_linkName = s_adobe.prop3 + '_action:auth:firstSignIn';
+            } else if (w.adb.event.eventInfo.eventName === 'projectCreated') {
+                s_adobe_linkName = s_adobe.prop3 + '_action:projectCreated';
+            } else if (
+                w.adb.event.eventInfo.eventName === 'Sharing Action' &&
+                w.adb.projectm &&
+                w.adb.projectm.eventData &&
+                w.adb.projectm.eventData.eventAction
+            ) {
+                s_adobe_linkName = s_adobe.prop3 + '_action:share';
+                if (w.adb.projectm.eventData.eventAction === 'Content Publishes') {
+                    s_adobe_linkName += ':contentPublish';
+                } else if (w.adb.projectm.eventData.eventAction === 'Social Shares') {
+                    s_adobe_linkName += ':social';
+                }
+            }
+
+            if (s_adobe_linkName) {
+                s_adobe.tl(true, 'o', s_adobe_linkName);
+            }
+
+            s_adobe.linkTrackEvents = linkTrackEventsBackup;
+            s_adobe.events = eventsBackup;
+        }
+
+    });
+
+
+
+_satellite.adb.plugins.RegisterPlugin('adbToContextData', function(obj, prefix) {
+
+
+    for (var i in obj) {
+
+        if (!obj.hasOwnProperty(i)) continue;
+        // console.log('i: ' + i + ', ' + prefix);
+        s.contextData[prefix + '.' + i] = (typeof(obj[i]) === "boolean") ? obj[i].toString() : obj[i];
+        if (typeof obj[i] === 'object') {
+            _satellite.adb.plugins.adbToContextData(obj[i], prefix + '.' + i);
+        }
+    }
+});
+
+// End of plugins
+
+
+}
+/************************************************************************************
+*  _____   ____    _   _  ____ _______   ______ _____ _____ _______ 
+* |  __ \ / __ \  | \ | |/ __ \__   __| |  ____|  __ \_   _|__   __|
+* | |  | | |  | | |  \| | |  | | | |    | |__  | |  | || |    | |   
+* | |  | | |  | | | . ` | |  | | | |    |  __| | |  | || |    | |   
+* | |__| | |__| | | |\  | |__| | | |    | |____| |__| || |_   | |   
+* |_____/ \____/  |_| \_|\____/  |_|    |______|_____/_____|  |_|   
+*                    
+* The code contained below controls the timing of DTM activity relative to your web
+* application. Please contact your Adobe technical consultant to make any changes to
+* this portion of the code, unless you're REALLY sure you know what you're doing.
+*
+* Adobe Consultant: Christopher Luka
+* Email: cluka@adobe.com
+* 
+************************************************************************************/
+
+/******************************************************************************
+ * Adobe DTM Data Layer Version 1.0
+ * Created by Chris Luka, Enterprise Architect, Adobe Consulting Services
+ *
+ * This code provides a standardized data layer for all DTM services, along
+ * with several helper routines for handling asynchronous web applications &
+ * in-page activity tracking.
+ *****************************************************************************/
+
+/******************************************************************************
+ * Adobe DTM Data Layer -- Initialization -- CHANGES TO CONTENT BELOW THIS 
+ * POINT WILL SIGNIFICANTLY IMPACT DTM PERFORMANCE.  EDIT WITH CARE.
+ *****************************************************************************/
+
+    // Status code constants
+    var _DTM_BOOTSTRAP                    = 0;
+    var _DTM_PRIMARY_OBJECT_CREATED       = 1;
+    var _DTM_WAITING_FOR_ASYNC_COMPLETION = 2;
+    var _DTM_READY                        = 3;
+    
+    // Set initial status code
+    var _dtm_status_code = _DTM_BOOTSTRAP;
+    
+    // Wait until _dtm is available, then initialize
+    _dtm_bootstrap();
+
+/******************************************************************************
+* Adobe DTM Data Layer -- Functions
+*****************************************************************************/
+
+// Create primary functions & interactions
+function _dtm_bootstrap(){
+    
+    // Create the DTM data layer subobject under _satellite (and create an alias)
+    _satellite[_dtm_data_layer_key] = new Object();
+    var dl = _satellite[_dtm_data_layer_key];
+    
+    // Now add the subsidiary objects
+    dl.plugins = new Object();
+    dl.async = new Object();
+    dl.data = _dtm_data_object;
+    dl.support = new Object();
+
+    // Update status code
+    _dtm_status_code = _DTM_PRIMARY_OBJECT_CREATED;
+    
+    // If this page has asynchronous behavior, let's set up the async handler
+    if(_dtm_async_activity){
+        
+        // Let's delay calls to analytics until aynchronous elements have
+        // loaded
+        _dtm_status_code = _DTM_WAITING_FOR_ASYNC_COMPLETION;
+        
+        // Initialize the asynchronous handler
+        _dtm_init_async(dl);
+    }
+    else{
+        
+        _dtm_status_code = _DTM_READY;
+    }
+    
+    // Provide function for registering plugins
+    dl.plugins.RegisterPlugin = function(plugin_name, plugin_fn){
+    
+        dl.plugins[plugin_name] = plugin_fn;
+    };
+  
+    // Call the plugin registration library
+    _dtm_register_plugins();
+    
+    // Call main loop
+    _dtm_main();
+}
+
+function _dtm_init_async(dl){
+
+    // Create asynchronous supporting objects
+    dl.async.items = new Object();
+    dl.async.readyState = false;
+    
+    // Delay the reporting handler to ensure async elements have time to
+    // register
+    window.setTimeout(function(){dl.async.readyState=true}, _dtm_async_delay);
+    
+    // This gets called to register an asynchronous activity
+    dl.plugins.register_async = function(async_name){
+        dl.async.items[async_name] = false;
+    }
+    
+    // This gets called to report completion of an asynchronous activity 
+    dl.plugins.report_async_complete = function(async_name){
+        
+        // Report the task complete
+        dl.async.items[async_name] = true;
+        
+        // Now do a check to see if all async items have completed
+        if(!dl.async.readyState){
+            
+            // We're not ready to check quite yet, the async registration
+            // period is still open
+            window.setTimeout(function(){dl.report_async_complete(async_name)},50);
+        }
+        else {
+            
+            // Registration period is closed, let's check for full completion
+            var async_complete = true;
+            for(var i in dl.async.items){
+            if(dl.async.items.hasOwnProperty(i)){
+                async_complete = async_complete && dl.async.items[i];
+            }}
+            if (async_complete) _dtm_status_code = _DTM_READY;
+        }
+    }    
+}
+
+function _dtm_data_ready(){
+    
+    return (_dtm_status_code == _DTM_READY) ? true : false;
+}
+
+function _dtm_main(){
+    
+    if(_dtm_data_ready() && _dtm_check_status()){
+        
+        _dtm_application();
+    }
+    else{
+        
+        window.setTimeout(_dtm_main,50);    
+    }
+}

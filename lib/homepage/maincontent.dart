@@ -11,6 +11,7 @@ import 'package:mweather/spinkit.dart';
 import 'package:mweather/weatherdata/fetchweather.dart';
 import 'package:intl/intl.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:weather_icons/weather_icons.dart';
 
 class MainContent extends StatefulWidget {
   final double latitude;
@@ -69,7 +70,7 @@ class _MainContentState extends State<MainContent> {
                               height: MediaQuery.of(context).size.height / 5,
                               width: MediaQuery.of(context).size.width,
                               child: Card(
-                                elevation: 1.0,
+                                elevation: 4.0,
                                 color: Color.fromRGBO(255, 235, 59, 0.2),
                                 child: Center(
                                   child: Text(
@@ -103,7 +104,7 @@ class _MainContentState extends State<MainContent> {
                                         MediaQuery.of(context).size.width / 2 -
                                             5.0,
                                     child: Card(
-                                      color: Colors.brown,
+                                      color: Colors.blue,
                                       child: Column(
                                         children: <Widget>[
                                           Container(
@@ -140,7 +141,7 @@ class _MainContentState extends State<MainContent> {
                                         MediaQuery.of(context).size.width / 2 -
                                             5.0,
                                     child: Card(
-                                      color: Colors.red,
+                                      color: Colors.blue,
                                       child: Center(
                                           child: PageView(
                                         pageSnapping: true,
@@ -150,24 +151,26 @@ class _MainContentState extends State<MainContent> {
                                             margin: EdgeInsets.symmetric(
                                                 horizontal: 2.0,
                                                 vertical: 10.0),
-                                            color: Colors.red,
+                                            color: Colors.blue,
                                             child: Row(
                                               children: <Widget>[
-                                                Image.asset(
-                                                    'assets/temperature.png',
-                                                    color: Colors.black,
-                                                    height: 70,
-                                                    width: 50),
-                                                Center(
-                                                  child: Text(
-                                                    '${snapshot.data.temp.toStringAsFixed(0)} °C',
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 40.0,
-                                                        fontWeight:
-                                                            FontWeight.normal,
-                                                        fontFamily: 'Acme'),
-                                                  ),
+                                                SizedBox(
+                                                  height: 20,
+                                                ),
+                                                BoxedIcon(
+                                                  WeatherIcons.thermometer,
+                                                  size: 40,
+                                                  color: Colors.yellow,
+                                                ),
+                                                Text(
+                                                  '${snapshot.data.temp.toStringAsFixed(0)} °C',
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 40.0,
+                                                      fontWeight:
+                                                          FontWeight.normal,
+                                                      fontFamily: 'Acme'),
+                                                  textAlign: TextAlign.center,
                                                 ),
                                               ],
                                             ),
@@ -209,7 +212,7 @@ class _MainContentState extends State<MainContent> {
                                               2 -
                                           5.0,
                                       child: Card(
-                                        color: Colors.pink,
+                                        color: Colors.blue,
                                         child: Center(
                                           child: Column(
                                             children: <Widget>[
@@ -249,13 +252,19 @@ class _MainContentState extends State<MainContent> {
                                         child: Center(
                                           child: Column(
                                             children: <Widget>[
+                                              SizedBox(
+                                                height: 20,
+                                              ),
                                               Container(
                                                 padding: EdgeInsets.all(10.0),
                                                 child: Icon(
-                                                  Icons.date_range,
-                                                  size: 80.0,
-                                                  color: Colors.brown,
+                                                  Icons.access_time,
+                                                  size: 40,
+                                                  color: Colors.yellow,
                                                 ),
+                                              ),
+                                              SizedBox(
+                                                height: 10,
                                               ),
                                               Text(
                                                 new DateFormat.Hm()
@@ -292,17 +301,16 @@ class _MainContentState extends State<MainContent> {
                               height: 70,
                               padding: EdgeInsets.all(2.0),
                               child: Card(
-                                color: Color(0xfff44235),
+                                color: Colors.blue,
                                 elevation: 2.0,
                                 child: Center(
                                   child: Text(
-                                    'Detailed Information',
+                                    'Current Weather Details',
                                     style: TextStyle(
                                       color: Colors.white,
-                                      fontSize: 20.0,
-                                      fontFamily: 'IndieFlower',
+                                      fontSize: 18.0,
+                                      fontFamily: 'Acme',
                                       letterSpacing: 1.0,
-                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                 ),
@@ -319,9 +327,15 @@ class _MainContentState extends State<MainContent> {
                                 child: Container(
                                   padding: EdgeInsets.all(20.0),
                                   decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      image: AssetImage('assets/back4.png'),
-                                      fit: BoxFit.cover,
+                                    gradient: LinearGradient(
+                                      colors: [
+                                        Colors.blue,
+                                        Colors.white,
+                                        Colors.greenAccent,
+                                        Colors.white,
+                                        Colors.blue,
+                                      ],
+                                      tileMode: TileMode.mirror,
                                     ),
                                   ),
                                   child: Row(
@@ -378,9 +392,15 @@ class _MainContentState extends State<MainContent> {
                                 child: Container(
                                   padding: EdgeInsets.all(20.0),
                                   decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      image: AssetImage('assets/back2.jpg'),
-                                      fit: BoxFit.fitWidth,
+                                    gradient: LinearGradient(
+                                      colors: [
+                                        Colors.blue,
+                                        
+                                        Colors.white,
+                                      
+                                        Colors.blue,
+                                      ],
+                                      tileMode: TileMode.repeated,
                                     ),
                                   ),
                                   child: Row(
@@ -437,7 +457,8 @@ class _MainContentState extends State<MainContent> {
                 color: Colors.white60,
                 height: MediaQuery.of(context).size.height,
                 width: MediaQuery.of(context).size.width,
-                child: ForecastPage( latitude: widget.latitude,longitude: widget.longitude),
+                child: ForecastPage(
+                    latitude: widget.latitude, longitude: widget.longitude),
               ),
             ],
           );
